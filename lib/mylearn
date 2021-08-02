@@ -1,0 +1,15 @@
+-- Card depends on its child except it has a sizeable parent like container.
+-- width:double.infinity takes the available width of its parents
+-- Column widget sizes according to the width of its children
+Mainaxisalignment and crossaxisAlignment are core for row and column, mainaxis for column is top to bottom and left to right for row
+ --To use list of widgets in the appbar, use actions, just like children, it collects list of widgets
+ -- widget dot(.) helps you access properties in your widget class from your state
+
+ ERROR
+  return sum + item['amount'];// The argument type 'Object' can't be assigned to the parameter type 'num'. (Documentation)
+  FIX :  return sum + item['amount'] as double
+  Flexible helps to keep the flex(size or width) of children of a row or column.
+  FittedBox -- it prevents its child from growing or wrapping.
+
+
+-- To get details about a widget, ctrl click on the widget
