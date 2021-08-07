@@ -3,7 +3,7 @@
 -- Column widget sizes according to the width of its children
 Mainaxisalignment and crossaxisAlignment are core for row and column, mainaxis for column is top to bottom and left to right for row
  --To use list of widgets in the appbar, use actions, just like children, it collects list of widgets
- -- widget dot(.) helps you access properties in your widget class from your state
+ -- widget dot(.) helps you access properties in your widget class from your state. By default row or column gets all the size it can get, to limit this, use mainAxisSize:MainAxisSize.min
 
  ERROR
   return sum + item['amount'];// The argument type 'Object' can't be assigned to the parameter type 'num'. (Documentation)
@@ -13,3 +13,8 @@ Mainaxisalignment and crossaxisAlignment are core for row and column, mainaxis f
 
 
 -- To get details about a widget, ctrl click on the widget
+I had this error The element type 'dynamic' can't be assigned to the list type 'Widget'. in a tenary operator.
+FIX : I discoverd that i did not remove comma(,) from one of the containers.
+
+-- Go to Cupertino page and get cupertino widgets for to get some ios specific styles
+-- To use Platform.isIOS, import dart:io,

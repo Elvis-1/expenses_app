@@ -5,14 +5,16 @@ import 'homepage.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitUp,
+    // Use this when you want to disable landscape mode, also remember to import services package.
+    // DeviceOrientation.portraitUp,
+    // //DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitDown,
 
   ]);
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
   //const MyApp({Key? key}) : super(key: key);
 
   @override

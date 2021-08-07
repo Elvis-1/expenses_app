@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +30,10 @@ class _MyHomePageState extends State<MyHomePage> {
     //     amount: 79.99,
     //     date: DateTime.now()),
   ];
+
+  bool _showChart = false;
+
+
 
   List<Transaction> get _recentTransactions{
     return  _userTransaction.where((tx){
@@ -65,10 +71,50 @@ class _MyHomePageState extends State<MyHomePage> {
       } );
     });
   }
+Widget _buildLandScapeContent(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Show Chart'),
+        Switch.adaptive(value: _showChart, onChanged:(val){
+          setState(() {
+            _showChart = val;
+          });
+
+        }),
+      ],
+    );
+}
+
+Widget _buildPortraitContent(MediaQueryData mediaquery, PreferredSizeWidget appBar){
+  return  Container(
+      height: (
+          mediaquery
+              .size
+              .height - appBar.preferredSize.height - MediaQuery
+              .of(context)
+              .padding
+              .top) * 0.3,
+      child: Chart(_recentTransactions));
+}
+
+  // PreferredSize(
+  // preferredSize: Size.fromHeight(100.0),
+  // child: _anyWidget
+  // )
 
   @override
   Widget build(BuildContext context) {
-    final appBar =  AppBar(title: Text('Expenses App'),
+    final mediaquery = MediaQuery.of(context);
+    final isLandScape = mediaquery.orientation == Orientation.landscape;
+    final PreferredSizeWidget appBar =  (Platform.isIOS? CupertinoNavigationBar(middle: Text('Expenses App'),
+    trailing: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [IconButton(
+      icon:Icon(Icons.add),
+      onPressed:()=> _startAddNewTransaction(context),
+    ),],),
+    ) : AppBar(title: Text('Expenses App'),
       actions: [
         IconButton(
           icon:Icon(Icons.add),
@@ -76,26 +122,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
 
       ],
-    );
-    return Scaffold(
-      appBar:appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          //mainAxisAlignment:MainAxisAlignment.spaceAround,
-          children: [
-           Container(
-               height: (
-                   MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top)*0.3,
-               child: Chart(_recentTransactions)),
+    ))as PreferredSizeWidget;
 
-  Container(
-      height: (MediaQuery.of(context).size.height - appBar.preferredSize.height - MediaQuery.of(context).padding.top)*0.7,
-      child: TransactionList(_userTransaction, _deleteTransaction))
-          ],
-        ),
+
+    final txListWidget = Container(
+      height: (mediaquery.size.height - appBar.preferredSize.height - mediaquery.padding.top)*0.7,
+      child: TransactionList(_userTransaction, _deleteTransaction),);
+
+    final pageBody = SafeArea(
+      child:SingleChildScrollView(
+      child: Column(
+        //mainAxisAlignment:MainAxisAlignment.spaceAround,
+        children: [
+          if(isLandScape) _buildLandScapeContent(),
+          if(!isLandScape) _buildPortraitContent(mediaquery,appBar),
+          if(!isLandScape) txListWidget,
+          if(isLandScape) _showChart ? Container(
+              height: (
+                  mediaquery
+                      .size
+                      .height - appBar.preferredSize.height - MediaQuery
+                      .of(context)
+                      .padding
+                      .top) * 0.7,
+              child: Chart(_recentTransactions))
+
+              :txListWidget
+        ],
       ),
+    ));
+
+    return Platform.isIOS? CupertinoPageScaffold(
+        child: pageBody,
+    navigationBar: appBar as ObstructingPreferredSizeWidget,
+    ): Scaffold (
+      appBar:appBar,
+      body:pageBody,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isIOS ? Container() : FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: ()=> _startAddNewTransaction(context),
       ),
