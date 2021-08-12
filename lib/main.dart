@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'homepage.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([
     // Use this when you want to disable landscape mode, also remember to import services package.
     // DeviceOrientation.portraitUp,
-    // //DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitUp,
     // DeviceOrientation.portraitDown,
 
   ]);
